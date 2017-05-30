@@ -33,35 +33,50 @@ Download [Python](https://www.python.org/downloads/) and [Pip](https://pip.pypa.
 
 Follow [these](https://www.dataquest.io/blog/pyspark-installation-guide/) instructions for PySpark setup! 
 
+
 ## 1.0 Background
 
+Spark is a low-level system for distributed computation on clusters, capable of doing in-memory caching between stages, improving the performance. This is in contrast to Hadoop, which instead writes everything to disk. Spark is also a much more flexible system in that it's not only constrained to MapReduce. 
+
+Now, it might seem as though Spark is a replacement for Hadoop; and though it sometimes is used as a replacement, it can also be used to complement Hadoop's functionality. By running Spark on top of a Hadoop cluster, you can still leverage HDFS and YARN and then have Spark replace MapReduce. 
 
 
+## REPLs
 
-### DeepSpark
+Spark is composed of a built-in Read-Evaluate-Print-Loop in the form of a shell that can be used for interactive analysis. You can begin by entering the following into your terminal:
 
-DeepSpark uses cutting-edge neural networks to automate the manual processes of software development, including writing test cases, fixing bugs, implementing features according to specs, and reviewing pull requests (PRs) for their correctness, simplicity, and style. As a multifaceted program trained to examine diffs against Spark code base, DeepSpark automatically writes its own patches for Spark. By reviewing PRs, this AI can both enforce a high and consistent standard for code quality as well as make constructive suggestions. Additionally, DeepSpark, during its code scanning, is capable of generating code for new components of Spark. 
+``` bash
+$SPARK_HOME/bin/pyspark
+```
 
-DeepSpark consists of three 15-layer convolutional neural networks on a 12,000-node Spark cluster using 1.2 PB of memory. The first network, the analytical network, is trained using a data set constructed from historical PRs against Spark, with a goal of training the network to identify the problem solved by a PR. 
+Next, you can run the following in Python:
 
-Then, the second network, the generative network, is trained using selected code examples from StackOverflow tagged with the apache-spark label, designed to produce constructive comments and code segments which were helpful in solving the poster’s problem. Because this network generates human-readable responses, this network has a number of input features regarding discriminatory language to prevent it from making unsavory comments (as other AIs have been plagued by this issue). 
+``` python
+import pyspark
+sc = pyspark.SparkContext("local[*]", "demo")
+```
 
-The final network, the evaluative network, is trained to identify whether a change is helpful and effective or not, also using past Spark pull requests as a training set, with a goal of predicting the probability of a particular change of being merged into Spark.
+Note that Spark only allows one Spark Context to be active at a time, so you'll need to stop the current spark context before starting a new one.
 
-By using these three networks in synchronicity, DeepSpark is able to effectively review PRs by determining what problem they are solving, evaluating whether or not the PR solves this problem, and offering suggestions if there are sections of the PR which are not correct or don’t meet Spark standards for quality. If DeepSpark cannot identify any errors or issues with a PR with 95% certainty, it will LGTM, and if it finds that this rate dips below 60%, the PR is immediately closed. This way, DeepSpark has decreased the average time to response for a PR from 5 days to 40 seconds, while also reducing the time committers spend in this area considerably.
+If this doesn't work, make sure the PYTHONPATH contains the module:
 
+``` bash
+export PYTHONPATH=$SPARK_HOME/python:$SPARK_HOME/python/lib/:$PYTHONPATH
+```
 
+Now in R, the process is very similar:
 
-### PySpark
-
-Apache spark and pyspark in particular are fantastically powerful frameworks for large scale data processing and analytics. In the past I’ve written about flink’s python api a couple of times, but my day-to-day work is in pyspark, not flink. With any data processing pipeline, thorough testing is critical to ensuring veracity of the end-result, so along the way I’ve learned a few rules of thumb and build some tooling for testing pyspark projects.
-
-
+``` R
+library(SparkR, 
+        lib.loc = c(file.path(Sys.getenv("SPARK_HOME"), "R", "lib")))
+sparkR.session(master = "local[*]", 
+               sparkConfig = list(spark.driver.memory = "2g"))
+```
 
 ## 5.0 Final Words
 
 
 ### 5.1 Resources
 
-[]() <br>
-[]()
+[Apache Spark](http://spark.apache.org/) <br>
+[Spark Github](https://github.com/apache/spark)
