@@ -1,37 +1,82 @@
-ADI Curriculum Template
-=======================
+Intro to Apache Spark
+==================
 
-Make a new curriculum to be deployed on [learn.adicu.com](http://learn.adicu.com).  It's easy to get started writing your own curriculum!
+Brought to you by [Lesley Cordero](http://www.columbia.edu/~lc2958).
 
-### Getting started
-*This assumes that you don't fork this repo.  You can only fork once, after all!*
+## Table of Contents
 
-1. `git clone https://github.com/adicu/learn-template.git`
+- [0.0 Setup](#00-setup)
+	+ [0.1 R and R Studio](#01-r-and-r-studio)
+	+ [0.2 Packages](#02-packages)
+- [1.0 Background](#10-background)
+- [7.0 Final Words](#60-final-words)
+	+ [7.1 Resources](#61-resources)
+	+ [7.2 More!](#72-more)
 
-2. `cd learn-template`
 
-3. `make`.  This will prompt you several times:
-    1. First, make a new, different repo on GitHub for your curriculum, and _**don't**_ initialize it with a `README.md` or `.gitignore`.  We'll make these ourselves.  Copy the HTTPS / SSH url, and paste it into the first prompt.
-    2. Next, enter the name for your curriculum.  It should be capitalized, with spaces.  Something like "Javascript for Beginners" is good.
+## 0.0 Setup
 
-    The whole process should look something like this:
-    ```
-    Make a new repo on GitHub, and find it's SSH / HTTPS url, and paste it below.
-    Paste GitHub URL: https://github.com/danrschlosser/learn-javascript.git
-    Please enter the name of your curriculum: JavaScript for Beginners
-    Filling in templates...
-    Converting markdown with Python markdown...
-    Syncing build/title.txt with https://github.com/danrschlosser/learn-javascript.git
-    ```
+This guide was written in Python 3.5.
 
-4. Edit your newly created markdown file.  The `make` command should have created a `.md` file in the root directory.  Write your curriculum in the file.
 
-### Viewing in Browser
+### 0.1 Python and Pip
 
-The `make` command also generates `output.html`, which is the HTML version of the markdown file created in the root directory.  You can open this file in your browser to view your project.
+Download [Python](https://www.python.org/downloads/) and [Pip](https://pip.pypa.io/en/stable/installing/).
 
-### Deploying
+### 0.2 Modules
 
-_Note: In order to deploy these projects, you need to have SSH access to `adi-website`.  Ask Dan, Nate, Eunice, or Raymond for help setting this up._
 
-Run `make deploy` to deploy your curriculum.  The first time, it will ask for a path slug.  Give something **unique**!
+```
+```
+
+### 0.3 Other 
+
+Follow [these](https://www.dataquest.io/blog/pyspark-installation-guide/) instructions for PySpark setup! 
+
+
+## 1.0 Background
+
+Spark is a low-level system for distributed computation on clusters, capable of doing in-memory caching between stages, improving the performance. This is in contrast to Hadoop, which instead writes everything to disk. Spark is also a much more flexible system in that it's not only constrained to MapReduce. 
+
+Now, it might seem as though Spark is a replacement for Hadoop; and though it sometimes is used as a replacement, it can also be used to complement Hadoop's functionality. By running Spark on top of a Hadoop cluster, you can still leverage HDFS and YARN and then have Spark replace MapReduce. 
+
+
+## REPLs
+
+Spark is composed of a built-in Read-Evaluate-Print-Loop in the form of a shell that can be used for interactive analysis. You can begin by entering the following into your terminal:
+
+``` bash
+$SPARK_HOME/bin/pyspark
+```
+
+Next, you can run the following in Python:
+
+``` python
+import pyspark
+sc = pyspark.SparkContext("local[*]", "demo")
+```
+
+Note that Spark only allows one Spark Context to be active at a time, so you'll need to stop the current spark context before starting a new one.
+
+If this doesn't work, make sure the PYTHONPATH contains the module:
+
+``` bash
+export PYTHONPATH=$SPARK_HOME/python:$SPARK_HOME/python/lib/:$PYTHONPATH
+```
+
+Now in R, the process is very similar:
+
+``` R
+library(SparkR, 
+        lib.loc = c(file.path(Sys.getenv("SPARK_HOME"), "R", "lib")))
+sparkR.session(master = "local[*]", 
+               sparkConfig = list(spark.driver.memory = "2g"))
+```
+
+## 5.0 Final Words
+
+
+### 5.1 Resources
+
+[Apache Spark](http://spark.apache.org/) <br>
+[Spark Github](https://github.com/apache/spark)
